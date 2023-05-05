@@ -162,7 +162,7 @@ export const genres = {
   "64c4197d-5f8e-4bff-b440-6d19bc591fd9": "Magic"
 }
 
-books = [
+export const books = [
   {
     "id": "760b3450-9c86-42d0-8eff-e793bf823756",
     "genres": [
