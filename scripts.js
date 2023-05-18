@@ -1,21 +1,58 @@
 import { booksPerPage, authors, genres, books } from './data.js'
 
+//Show books on the home screen.
+let [bookStart, bookEnd] = [0, 36]; //uses destructuring to assign 0 to bookStart and 36 to bookEnd(total bboks displayed = 37)
+const inco = document.querySelector('[data-list-items]') //Targets where we want to edit or work.
+const extracted = books.slice(bookStart, bookEnd) //given start, up to a (not inclusive) given end
+const fragment = document.createDocumentFragment()  //new DocumentFragment object, which is a lightweight container for storing a collection of DOM nodes.
+for (const { author, image, title, id, description, published } of extracted) {
+
+    let element = document.createElement('button')
+    //Elements - Used to populate the book details in the overlay.
+    element.classList = 'preview'
+    element.dataset.id = id
+    element.dataset.title = title
+    element.dataset.description = description
+    element.dataset.image = image
+    element.dataset.subtitle = (`${authors[author]} (${(new Date(published)).getFullYear()})`)
+    element.setAttribute('data-preview', id)
+
+    element.innerHTML = /*Image, Name and tile used to display books*/ `
+            <div><img
+                class ="preview__image"
+                src="${image}"
+            /></div>
+            
+            <div class="preview__info">
+                <h3 class="preview__title">${title}</h3>
+                <div class="preview__author">${authors[author]}</div>
+            </div>
+        `
+    fragment.appendChild(element) //This line of code appends the element to the fragment.
+}
+inco.appendChild(fragment) /* This process efficiently adds all of the books to the DOM in
+ a single operation, reducing the number of DOM manipulation operations.
+ + This also helps with perfomance*/
+
+
+
 //Display book details(preview).
 const details = (event) => {
     //These variables will be used to update the content of the modal window later in the code.
-    const overlay1 = document.querySelector('[data-list-active]')
+    const image1 = document.querySelector('[data-list-image]')
     const title = document.querySelector('[data-list-title]')
+    const overlay1 = document.querySelector('[data-list-active]')
     const subtitle = document.querySelector('[data-list-subtitle]')
     const description = document.querySelector('[data-list-description]')
-    const image1 = document.querySelector('[data-list-image]')
-    const imageblur = document.querySelector('[data-list-blur]')
 
+
+    //Tenary conditional statements instead of a if else statement.
     event.target.dataset.id ? overlay1.style.display = 'block' : undefined;
     event.target.dataset.title ? title.innerHTML = event.target.dataset.title : undefined;
     event.target.dataset.subtitle ? subtitle.innerHTML = event.target.dataset.subtitle : undefined;
     event.target.dataset.description ? description.innerHTML = event.target.dataset.description : undefined;
     event.target.dataset.image ? image1.setAttribute('src', event.target.dataset.image) : undefined;
-    event.target.dataset.image ? imageblur.setAttribute('src', event.target.dataset.image) : undefined;
+
 }
 document.querySelector('[data-list-items]').addEventListener('click', details)
 document.querySelector('[data-list-close]').addEventListener('click', (event) => {
@@ -24,7 +61,7 @@ document.querySelector('[data-list-close]').addEventListener('click', (event) =>
 
 
 //Search more
-const matches = books
+const matches = books //books variable has already been declared from data.js
 const page = 1;
 const moreBooks = document.querySelector('[data-list-button]');
 const showMore = page * booksPerPage;
@@ -38,35 +75,7 @@ moreBooks.addEventListener('click', () => {
     moreBooks.focus();
 });
 
-let [startIndex, endIndex] = [0,36] //Range of number of books to load.
-moreBooks.addEventListener('click', () => {
-    const extracted = books.slice(startIndex, endIndex);
 
-    const fragment = document.createDocumentFragment();
-    for (const { author, image, title, id, description, published } of extracted) {
-        const element = document.createElement('button');
-        element.classList.add('preview');
-        element.dataset.id = id;
-        element.dataset.title = title;
-        element.dataset.description = description;
-        element.dataset.image = image;
-        element.dataset.subtitle = `${authors[author]} (${new Date(published).getFullYear()})`;
-        element.setAttribute('data-preview', id);
-        element.innerHTML = /* html */ `
-      <div>
-        <img class="preview__image" src="${image}" />
-      </div>
-      <div class="preview__info">
-        <h3 class="preview__title">${title}</h3>
-        <div class="preview__author">${authors[author]}</div>
-      </div>
-    `;
-        fragment.appendChild(element);
-    }
-    document.querySelector('[data-list-items]').appendChild(fragment);
-    startIndex += 36;
-    endIndex += 36;
-});
 
 
 //Theme
@@ -81,11 +90,13 @@ const night = {
 }
 
 const settingOverlay = document.querySelector('[data-header-settings]')
+
 settingOverlay.addEventListener('click', (event) => {
     document.querySelector('[data-settings-overlay]').style.display = 'block' //shows an overlay element with a data-settings-overlay attribute.
 })
 const dataSettingsTheme = document.querySelector('[data-settings-theme]')
 const saveButton = document.querySelector("body > dialog:nth-child(5) > div > div > button.overlay__button.overlay__button_primary")
+
 saveButton.addEventListener('click', (event) => {
     event.preventDefault() //prevent the default behavior of the button
     if (dataSettingsTheme.value === 'day') {
@@ -100,20 +111,9 @@ saveButton.addEventListener('click', (event) => {
     }
 });
 
-//Search button 
-const searchButton = document.querySelector('[data-header-search]');
-const searchOverlay = document.querySelector('[data-search-overlay]');
-const searchTitle = document.querySelector('[data-search-title]');
-const searchCancel = document.querySelector('[data-search-cancel]');
 
-searchButton.addEventListener('click', () => {
-    searchCancel.addEventListener('click', () => { //cancel button not working yet.
-      searchCancel.open = false;
-    });
-    searchOverlay.open = true;
-    searchTitle.focus();
-  });
 
+//These lines select the HTML elements with the data-search-genres and data-search-authors attributes and create a new option element.
 const dataGenres = document.querySelector('[data-search-genres]');
 const dataAuthors = document.querySelector('[data-search-authors]');
 const allOption = document.createElement('option');
@@ -137,6 +137,24 @@ for (const [id, names] of Object.entries(genres)) {
         dataAuthors.appendChild(element)
     }
 }
+
+
+//Search button 
+
+//This line selects the HTML element and assigns it to the _______ constant.
+const searchButton = document.querySelector('[data-header-search]');
+const searchOverlay = document.querySelector('[data-search-overlay]');
+const searchTitle = document.querySelector('[data-search-title]');
+const searchCancel = document.querySelector('[data-search-cancel]');
+
+//code adds an event listener to the search button element. When clicked, it sets the open property of the search overlay element to true, which makes it visible. It also focuses on the search title element. There is also another event listener added to the search cancel button, but it is not yet functional.
+searchButton.addEventListener('click', () => {
+    searchCancel.addEventListener('click', () => { //cancel button not working yet.
+        searchCancel.open = false;
+    });
+    searchOverlay.open = true;
+    searchTitle.focus();
+});
 
 
 
@@ -194,38 +212,6 @@ for (const [id, names] of Object.entries(genres)) {
 
 
 
-let [bookStart, bookEnd] = [0, 36]; //distructuring 
-const inco = document.querySelector('[data-list-items]')
-const extracted = books.slice(bookStart, bookEnd)
-const fragment = document.createDocumentFragment()  //new DocumentFragment object, which is a lightweight container for storing a collection of DOM nodes.
-for (const { author, image, title, id, description, published } of extracted) {
-
-    let element = document.createElement('button')
-    //Elements - Used to populate the book details in the overlay.
-    element.classList = 'preview'
-    element.dataset.id = id
-    element.dataset.title = title
-    element.dataset.description = description
-    element.dataset.image = image
-    element.dataset.subtitle = (`${authors[author]} (${(new Date(published)).getFullYear()})`)
-    element.setAttribute('data-preview', id)
-
-    element.innerHTML = /* html content*/ `
-            <div><img
-                class ="preview__image"
-                src="${image}"
-            /></div>
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
-    fragment.appendChild(element) //This line of code appends the element to the fragment.
-}
-inco.appendChild(fragment) /* This process efficiently adds all of the books to the DOM in
- a single operation, reducing the number of DOM manipulation operations.
- + This also helps with perfomance*/
 
 
 
