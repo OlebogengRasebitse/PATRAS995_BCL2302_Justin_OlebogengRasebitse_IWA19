@@ -16,5 +16,10 @@ THE USER SHOULD BE ABLE TO DO THE FOLLOWING;
 -Filtering options by author and genre will be available to find books by favorite authors or within preferred genres.
 -Toggle between dark and light modes will provide comfortable usage of the app, especially at night.
 
+Languages
+- HTML
+- CSS
+- JAVASCRIPT
+
 Contact
 patiencerasebitse@gmail.com
