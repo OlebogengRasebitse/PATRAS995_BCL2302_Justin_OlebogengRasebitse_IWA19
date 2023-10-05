@@ -1,5 +1,6 @@
 import { booksPerPage, authors, genres, books } from './data.js'
 
+
 //Show books on the home screen.
 let [bookStart, bookEnd] = [0, 36]; //uses destructuring to assign 0 to bookStart and 36 to bookEnd(total bboks displayed = 37)
 const inco = document.querySelector('[data-list-items]') //Targets where we want to edit or work.
@@ -61,19 +62,22 @@ document.querySelector('[data-list-close]').addEventListener('click', (event) =>
 
 
 //Search more
-const matches = books //books variable has already been declared from data.js
+const matches = books; // Assuming books variable has already been declared and assigned from data.js
 const page = 1;
 const moreBooks = document.querySelector('[data-list-button]');
 const showMore = page * booksPerPage;
+
 moreBooks.disabled = !(matches.length - showMore > 0);
 moreBooks.innerHTML = /* html */ `
     <span>Show more</span>
     <span class="list__remaining">${matches.length - showMore > 0 ? matches.length - showMore : 0}</span>
 `;
-moreBooks.addEventListener('click', () => {
-    event.preventDefault(); //prevent the default action of the button when clicked.
+
+moreBooks.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent the default action of the button when clicked.
     moreBooks.focus();
 });
+
 
 
 

@@ -1,5 +1,4 @@
 
-Project Title
 # PATRAS995_BCL2302_Justin_OlebogengRasebitse_IWA19
 
 📚 Webapp to be audited as part of final assessment for first JS module
@@ -15,6 +14,3 @@ THE USER SHOULD BE ABLE TO DO THE FOLLOWING;
 -Search for books using specific text phrases, eliminating the need for complete titles.
 -Filtering options by author and genre will be available to find books by favorite authors or within preferred genres.
 -Toggle between dark and light modes will provide comfortable usage of the app, especially at night.
-
-Contact
-patiencerasebitse@gmail.com
