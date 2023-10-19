@@ -14,3 +14,14 @@ THE USER SHOULD BE ABLE TO DO THE FOLLOWING;
 -Search for books using specific text phrases, eliminating the need for complete titles.
 -Filtering options by author and genre will be available to find books by favorite authors or within preferred genres.
 -Toggle between dark and light modes will provide comfortable usage of the app, especially at night.
+<<<<<<< HEAD
+=======
+
+Languages
+- HTML
+- CSS
+- JAVASCRIPT
+
+Contact
+patiencerasebitse@gmail.com
+>>>>>>> 3440a858a30077c8e0d5b09754c4c3c9969fedba
